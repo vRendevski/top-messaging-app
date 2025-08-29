@@ -14,7 +14,8 @@ const PgSession = connectPgSimple(session);
 
 const sessionMiddleware = session({
   store: new PgSession({ 
-    pool: new Pool({ connectionString: process.env.DATABASE_URL }) 
+    pool: new Pool({ connectionString: process.env.DATABASE_URL }), 
+    createTableIfMissing: true
   }),
   secret: process.env.COOKIE_SECRET,
   resave: false,

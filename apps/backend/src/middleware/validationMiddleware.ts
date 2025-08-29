@@ -1,43 +1,46 @@
+import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
-import { ZodAny, ZodType, ZodObject } from "zod";
-import * as z from "zod";
+import { createSuccessResponseSchema } from "@vRendevski/shared/schemas/rest";
 
-interface RequestSchemaShape {
-  params: ZodObject,
-  query: ZodObject,
-  body: ZodObject,
-}
+type RequestShape = {
+  params: z.ZodType,
+  query: z.ZodType,
+  body: z.ZodType,
+};
 
 export function withValidation<
-  RequestSchemaType extends ZodObject<Partial<RequestSchemaShape>> | ZodAny,
-  ResponseSchemaType extends ZodType,
-  RequestParamsType extends ("params" extends keyof RequestSchemaType ? z.infer<RequestSchemaType>["params"] : unknown),
-  RequestQueryType extends ("query" extends keyof RequestSchemaType ? z.infer<RequestSchemaType>["query"] : unknown),
-  RequestBodyType extends ("body" extends keyof RequestSchemaType ? z.infer<RequestSchemaType>["body"] : unknown),
-  ResponseType extends z.infer<ResponseSchemaType>
+  RequestSchemaType extends RequestShape,
+  ResponseSchemaType extends z.ZodType,
+  ResponseType extends z.infer<ResponseSchemaType>,
+  RequestParamsType extends z.infer<RequestSchemaType["params"]>,
+  RequestQueryType extends z.infer<RequestSchemaType["query"]>,
+  RequestBodyType extends z.infer<RequestSchemaType["body"]>,
 >
 (
   requestSchema: RequestSchemaType,
   responseSchema: ResponseSchemaType,
-  controller: (req: Request<RequestParamsType, {}, RequestQueryType, RequestBodyType>, res: Response<ResponseType>, next: NextFunction) => ResponseType
+  controller: (req: Request<RequestParamsType, {}, RequestQueryType, RequestBodyType>, res: Response<ResponseType>, next: NextFunction) => Promise<ResponseType>
 ) {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const requestData = requestSchema.parse({
+      const requestData = z.object(requestSchema).parse({
         params: req.params,
         query: req.query,
         body: req.body
+      }) as any;
+
+      if(requestData.params) Object.assign(req.params, requestData.params);
+      if(requestData.query) Object.assign(req.query, requestData.query);
+      if(requestData.body) Object.assign(req.body, requestData.body);
+
+      const data = await Promise.resolve(controller(req as any, res, next));
+
+      const response = createSuccessResponseSchema(responseSchema).parse({
+        success: true,
+        data: data
       });
 
-      req.params = requestData.params;
-      req.query = requestData.query;
-      req.body = requestData.body;
-
-      const dirtyResponse = await controller(req as any, res, next);
-
-      const responseData = responseSchema.parse(dirtyResponse) as ResponseType;
-
-      res.json(responseData);
+      res.json(response);
       next();
     }
     catch(err){
@@ -47,19 +50,20 @@ export function withValidation<
 }
 
 export function validateAndPass<
-  RequestSchemaType extends ZodObject<Partial<RequestSchemaShape>> | ZodAny
+  RequestSchemaType extends RequestShape
 >(requestSchema: RequestSchemaType) {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const requestData = requestSchema.parse({
+      const requestData = z.object(requestSchema).parse({
         params: req.params,
         query: req.query,
         body: req.body
-      });
+      }) as any;
 
-      req.params = requestData.params;
-      req.query = requestData.query;
-      req.body = requestData.body;
+      if(requestData.params) Object.assign(req.params, requestData.params);
+      if(requestData.query) Object.assign(req.query, requestData.query);
+      if(requestData.body) Object.assign(req.body, requestData.body);
+
 
       next();
     }

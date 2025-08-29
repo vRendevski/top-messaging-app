@@ -1,22 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { withValidation, validateAndPass } from "../middleware/validationMiddleware";
-import { 
-  EmptyParams, 
-  EmptyQuery, 
-  EmptyResponse, 
-  EmptyResponseSchema 
-} from "@vRendevski/shared/src/types/empty";
-import { 
-  RegisterRequestSchema,
-  RegisterRequestBody, 
-  LoginRequestSchema, 
-} from "@vRendevski/shared/src/types/rest/auth";
+import { AuthTypes, AuthSchemas } from "@vRendevski/shared/schemas/rest";
 import userService from "../service/UserService";
 import passport from "passport";
 
-const register = withValidation(RegisterRequestSchema, EmptyResponseSchema, async function (
-  req: Request<EmptyParams, {}, RegisterRequestBody, EmptyQuery>,
-  res: Response<EmptyResponse>,
+const register = withValidation(AuthSchemas.requests.register, AuthSchemas.responses.register, async function (
+  req: Request<AuthTypes.RegisterParams, {}, AuthTypes.RegisterBody, AuthTypes.RegisterQuery>,
+  res: Response<AuthTypes.RegisterResponse>,
   next: NextFunction
 ) 
 {
@@ -24,7 +14,7 @@ const register = withValidation(RegisterRequestSchema, EmptyResponseSchema, asyn
   await userService.createUser(username, email, password);
 });
 
-const login = [ validateAndPass(LoginRequestSchema), passport.authenticate("local") ];
+const login = [ validateAndPass(AuthSchemas.requests.login), passport.authenticate("local"), (req: Request, res: Response) => res.status(200).end() ];
 
 export {
   register,
