@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { EmptyParams, EmptyQuery, EmptyResponseSchema } from "./common/empty";
+import { EmptyParams, EmptyQuery, EmptyBody, EmptyResponseSchema } from "./common/empty";
 
 const AuthBodies = {
   register: z.object({
@@ -20,6 +20,18 @@ const AuthBodies = {
   })
 }
 
+const AuthResponses = {
+  login: EmptyResponseSchema,
+
+  register: EmptyResponseSchema,
+
+  me: z.object({
+    id: z.number().int(),
+    username: z.string(),
+    email: z.email()
+  })
+}
+
 export const AuthSchemas = {
   requests: {
     register: {
@@ -31,12 +43,18 @@ export const AuthSchemas = {
       params: EmptyParams,
       query: EmptyQuery,
       body: AuthBodies.login 
+    },
+    me: {
+      params: EmptyParams,
+      query: EmptyQuery,
+      body: EmptyBody
     }
   },
 
   responses: {
-    register: EmptyResponseSchema,
-    login: EmptyResponseSchema
+    register: AuthResponses.register,
+    login: AuthResponses.login,
+    me: AuthResponses.me
   }
 }
 
@@ -49,7 +67,11 @@ export namespace AuthTypes {
   export type LoginQuery = z.infer<typeof AuthSchemas.requests.login.query>;
   export type LoginBody = z.infer<typeof AuthSchemas.requests.login.body>;
 
+  export type MeParams = z.infer<typeof AuthSchemas.requests.me.params>;
+  export type MeQuery = z.infer<typeof AuthSchemas.requests.me.query>;
+  export type MeBody = z.infer<typeof AuthSchemas.requests.me.body>;
+
   export type RegisterResponse = z.infer<typeof AuthSchemas.responses.register>;
-  
   export type LoginResponse = z.infer<typeof AuthSchemas.responses.login>;
+  export type MeResponse = z.infer<typeof AuthSchemas.responses.me>;
 }

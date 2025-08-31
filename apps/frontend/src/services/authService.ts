@@ -9,6 +9,10 @@ class AuthService {
   async login(email: string, password: string) {
     return restService.post(AuthSchemas.responses.login, "/api/auth/login", { email, password });
   }
+
+  async me() {
+    return restService.get(AuthSchemas.responses.me, "/api/auth/me");
+  }
 }
 
 const authService = new AuthService();

@@ -10,12 +10,14 @@ import {
 } from '@/components/ui/card';
 import LoginForm from '@/components/forms/LoginForm';
 import InlineButtonLink from '@/components/shared/InlineButtonLink';
+import useRedirectIfAuthenticated from '@/hooks/useRedirectIfAuthenticated';
 
 export const Route = createFileRoute('/login')({
   component: LoginComponent,
 })
 
 function LoginComponent() {
+  useRedirectIfAuthenticated("/");
   return (
     <CenteredLayout>
       <Card className="w-[350px]">

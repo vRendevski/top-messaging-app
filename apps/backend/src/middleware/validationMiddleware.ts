@@ -48,27 +48,3 @@ export function withValidation<
     }
   }
 }
-
-export function validateAndPass<
-  RequestSchemaType extends RequestShape
->(requestSchema: RequestSchemaType) {
-  return async function (req: Request, res: Response, next: NextFunction) {
-    try {
-      const requestData = z.object(requestSchema).parse({
-        params: req.params,
-        query: req.query,
-        body: req.body
-      }) as any;
-
-      if(requestData.params) Object.assign(req.params, requestData.params);
-      if(requestData.query) Object.assign(req.query, requestData.query);
-      if(requestData.body) Object.assign(req.body, requestData.body);
-
-
-      next();
-    }
-    catch(err) {
-      next(err);
-    }
-  }
-}
