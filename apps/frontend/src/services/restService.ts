@@ -8,7 +8,7 @@ class RestService {
     return createApiResponseSchema(schema).parse(response.data);
   }
   
-  async post<T extends z.ZodType>(schema: T, url: string, data: object) {
+  async post<T extends z.ZodType>(schema: T, url: string, data?: object) {
     const response = await axios.post(url, data);
     return createApiResponseSchema(schema).parse(response.data);
   }

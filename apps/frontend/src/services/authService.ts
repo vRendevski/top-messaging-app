@@ -13,6 +13,10 @@ class AuthService {
   async me() {
     return restService.get(AuthSchemas.responses.me, "/api/auth/me");
   }
+
+  async logout(){
+    return restService.post(AuthSchemas.responses.logout, "/api/auth/logout");
+  }
 }
 
 const authService = new AuthService();

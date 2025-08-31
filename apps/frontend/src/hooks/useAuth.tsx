@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from "rea
 import useLoginMutation from "./auth/useLoginMutation";
 import useSignupMutation from "./auth/useSignupMutation";
 import useMeMutation from "./auth/useMeMutation";
+import useLogoutMutation from "./auth/useLogoutMutation";
 import { type AuthTypes } from "@vRendevski/shared/schemas/rest";
 
 type User = AuthTypes.MeResponse;
@@ -15,13 +16,14 @@ const AuthContext = createContext<AuthContextProviderState | undefined>(undefine
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  const login = useLoginMutation();
-  const signup = useSignupMutation();
-  const me = useMeMutation();
+  const loginMutation = useLoginMutation();
+  const signupMutation = useSignupMutation();
+  const meMutation = useMeMutation();
+  const logoutMutation = useLogoutMutation();
 
   const refetchMe = useCallback(async () => {
     try{
-      const response = await me() 
+      const response = await meMutation() 
       if(!response.success) {
         context?.setUser(null);
         return;
@@ -31,7 +33,16 @@ export function useAuth() {
     catch {
       context?.setUser(null);
     }
-  }, [context, me])
+  }, [context, meMutation]);
+
+  const logout = useCallback(async () => {
+    try {
+      await logoutMutation();
+    }
+    finally {
+      context?.setUser(null)
+    }
+  }, [context, logoutMutation]);
 
   if(context === undefined) {
     throw new Error("useAuth must be called within an AuthContextProvider");
@@ -39,9 +50,10 @@ export function useAuth() {
 
   return {
     user: context.user,
-    login,
-    signup,
-    refetchMe
+    login: loginMutation,
+    signup: signupMutation,
+    refetchMe,
+    logout
   }
 }
 
