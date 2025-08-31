@@ -1,16 +1,16 @@
-import { WebSocketServer } from "ws";
-import { IncomingMessage } from "http";
-import Stream from "stream";
+import http from "http";
+import { Server } from "socket.io";
+import { adaptAuthExpressMiddlewareToSocketIo } from "./utils/middlewareAdapter";
+import sessionMiddleware from "../config/session";
+import passport from "../config/passport";
+import { onlyPassAuthenticated } from "../middleware/authMiddleware";
 
-class WSServer {
-  server: WebSocketServer;
+export const startWebSocketServer = (listener: http.Server) => {
+  const io = new Server(listener);
 
-  constructor(){
-    this.server = new WebSocketServer({ clientTracking: false, noServer: true })
-  }
+  io.engine.use(adaptAuthExpressMiddlewareToSocketIo(sessionMiddleware));
+  io.engine.use(adaptAuthExpressMiddlewareToSocketIo(passport.session()));
+  io.engine.use(adaptAuthExpressMiddlewareToSocketIo(onlyPassAuthenticated));
 
-  upgrade(this: WSServer, req: IncomingMessage, socket: Stream.Duplex, head: Buffer){
-  }
+  return io;
 }
-
-export default new WSServer();
