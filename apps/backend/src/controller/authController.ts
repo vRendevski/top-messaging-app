@@ -33,9 +33,24 @@ const me = [ onlyPassAuthenticated, withValidation(AuthSchemas.requests.me, Auth
   return await userService.getUserById(req.user!.id, userSelect.privateProfile);
 })];
 
+const logout = [ onlyPassAuthenticated, async function (
+  req: Request<AuthTypes.LogoutParams, {}, AuthTypes.LogoutBody, AuthTypes.LogoutQuery>,
+  res: Response<AuthTypes.LogoutResponse>,
+  next: NextFunction
+)
+{
+  req.logout((err) => {
+    if(err) {
+      next(err);
+      return;
+    }
+    res.status(200).end();
+  });
+}];
 
 export {
   register,
   login,
-  me
+  me,
+  logout
 }
