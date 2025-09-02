@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import ChatroomContextProvider from '@/hooks/useChatrooms';
 import ChatSidebar from '@/components/sidebar/ChatSidebar';
 import SidebarMobileOnlyTrigger from '@/components/sidebar/SidebarMobileOnlyTrigger';
 import useRedirectIfUnauthenticated from '@/hooks/useRedirectIfUnauthenticated';
@@ -25,9 +26,11 @@ function ChatComponent() {
 
   return (
     <SidebarProvider>
-      <ChatSidebar />
-      <SidebarMobileOnlyTrigger />
-      <Outlet/>
+      <ChatroomContextProvider>
+        <ChatSidebar />
+        <SidebarMobileOnlyTrigger />
+        <Outlet/>
+      </ChatroomContextProvider>
     </SidebarProvider>
   );
 }

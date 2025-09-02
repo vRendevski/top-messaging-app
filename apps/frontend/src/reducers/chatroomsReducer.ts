@@ -1,11 +1,11 @@
-interface Chatroom {
+export interface Chatroom {
   id: number,
   name: string,
   isActive: boolean,
   unreadCount: number,
 }
 
-type ChatroomReducerAction = 
+export type ChatroomReducerAction = 
   | { type: "addOnlineUser"; payload: Omit<Chatroom, "isActive"> } 
   | { type: "addOfflineUser"; payload: Omit<Chatroom, "isActive"> }
 

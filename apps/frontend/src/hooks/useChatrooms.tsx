@@ -1,9 +1,26 @@
-import { useEffect, useReducer } from 'react'
+import { createContext, useContext, useEffect, useReducer } from 'react'
 import { useSocket } from './useSocket';
-import chatroomReducer from '@/reducers/chatroomsReducer';
+import chatroomReducer, { type Chatroom, type ChatroomReducerAction } from '@/reducers/chatroomsReducer';
 import { type EventTypes } from '@vRendevski/shared/schemas/ws/events';
 
-export default function useChatrooms() {
+interface ChatroomsProviderState {
+  chatrooms: Chatroom[],
+  dispatch: (action: ChatroomReducerAction) => void 
+}
+
+const ChatroomsContext = createContext<ChatroomsProviderState | undefined>(undefined);
+
+export function useChatrooms() {
+  const context = useContext(ChatroomsContext);
+
+  if(context === undefined) {
+    throw new Error("useChatrooms must be called within a ChatroomsContextProvider");
+  }
+
+  return context;
+}
+
+export default function ChatroomsContextProvider({ children }: { children: React.ReactNode }) {
   const { socket } = useSocket();
   const [ chatrooms, dispatch ] = useReducer(chatroomReducer, []);
 
@@ -25,5 +42,9 @@ export default function useChatrooms() {
     }
   }, [socket]);
 
-  return { chatrooms, dispatch };
+  return (
+    <ChatroomsContext.Provider value={{ chatrooms, dispatch }}>
+      { children }
+    </ChatroomsContext.Provider>
+  )
 }

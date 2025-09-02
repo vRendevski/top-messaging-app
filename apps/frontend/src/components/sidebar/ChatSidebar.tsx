@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/sidebar';
 import SidebarChatroomMenuItem from './SidebarChatroomMenuItem';
 import SidebarUserFooter from './SidebarUserFooter';
-import useChatrooms from '@/hooks/useChatrooms';
+import  { useChatrooms } from '@/hooks/useChatrooms';
 
 export default function ChatSidebar() {
   const { chatrooms, dispatch } = useChatrooms();
