@@ -20,7 +20,7 @@ export function useSocket() {
 }
 
 export default function SocketContextProvider({ children }: { children: React.ReactNode }) {
-  const [ socket ] = useState<Socket>(io({ autoConnect: false }));
+  const [ socket ] = useState<Socket>(io({ autoConnect: false, reconnection: false }));
 
   return (
     <SocketContext.Provider value={{ socket }}>

@@ -14,6 +14,12 @@ declare global {
   }
 }
 
+declare module "socket.io" {
+  interface Socket {
+    user: Express.User
+  }
+}
+
 passport.use(new LocalStrategy(
   { 
     usernameField: "email", 

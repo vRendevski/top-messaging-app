@@ -18,6 +18,10 @@ class UserService {
     });
   }
 
+  async getAllUsers<S extends Prisma.UserSelect>(select: S) {
+    return await db.user.findMany({ select });
+  }
+
   async userExistsByEmail(email: string): Promise<boolean> {
     const user = await db.user.findUnique({
       where: { email }
