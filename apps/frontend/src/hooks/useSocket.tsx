@@ -1,5 +1,8 @@
 import { createContext, useContext, useState } from "react";
-import io, { type Socket } from "socket.io-client";
+import io, { type Socket as IOSocket } from "socket.io-client";
+import type { ClientToServerEvents, ServerToClientEvents } from "@vRendevski/shared/schemas/ws/types";
+
+type Socket = IOSocket<ServerToClientEvents, ClientToServerEvents>
 
 interface SocketContextProviderState {
   socket: Socket

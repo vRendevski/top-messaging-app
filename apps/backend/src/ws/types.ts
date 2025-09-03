@@ -1,20 +1,5 @@
 import { Server as IOServer, Socket as IOSocket } from "socket.io";
-import { type EventTypes } from "@vRendevski/shared/schemas/ws/events";
-
-export interface ClientToServerEvents {
-}
-
-export interface ServerToClientEvents {
-  addOnlineUser: (data: EventTypes.AddOnlineUser) => void;
-  addOfflineUser: (data: EventTypes.AddOfflineUser) => void;
-}
-
-export interface InterServerEvents {
-}
-
-export interface SocketData {
-  userId: number
-}
+import { ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData } from "@vRendevski/shared/schemas/ws/types";
 
 export const Server = IOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 export type ServerInstance = InstanceType<typeof Server>;

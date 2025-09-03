@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { withValidation } from "../middleware/validationMiddleware";
 import { onlyPassAuthenticated } from "../middleware/authMiddleware";
 import { AuthTypes, AuthSchemas } from "@vRendevski/shared/schemas/rest";
+import { EventSchemas } from "@vRendevski/shared/schemas/ws/events";
+import { type ServerInstance as WebSocketServer } from "../ws/types";
 import userService from "../service/UserService";
 import userSelect from "../select/userSelect";
 import passport from "passport";
@@ -13,7 +15,11 @@ const register = withValidation(AuthSchemas.requests.register, AuthSchemas.respo
 ) 
 {
   const { username, email, password } = req.body;
-  await userService.createUser(username, email, password);
+  const createdUser = await userService.createUser(username, email, password);
+
+  const io: WebSocketServer = req.app.get("webSocketServer");
+  const ioResponse = { id: createdUser.id, username };
+  io.emit("user:new", EventSchemas.serverToClient.user.new.parse(ioResponse));
 });
 
 const login = [ passport.authenticate("local"), withValidation(AuthSchemas.requests.login, AuthSchemas.responses.login, async function (

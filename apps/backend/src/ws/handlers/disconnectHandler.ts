@@ -6,5 +6,12 @@ export async function registerDisconnectEvent(io: ServerInstance, socket: Socket
 }
 
 function handleDisconnect(io: ServerInstance, socket: Socket) {
-  io.emit("addOfflineUser", { ...EventSchemas.addOfflineUser.parse({ id: socket.user.id, username: socket.user.username, unreadCount: 0 }) });
+  try {
+    const response = { id: socket.user.id, isOnline: false };
+    io.emit("user:presence", EventSchemas.serverToClient.user.presence.parse(response));
+  }
+  catch(err) {
+    console.log(err);
+    socket.disconnect();
+  }
 }

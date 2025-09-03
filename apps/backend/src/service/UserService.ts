@@ -38,6 +38,14 @@ class UserService {
     return user !== null;
   }
 
+  async userExistsById(id: number): Promise<boolean> {
+    const user = await db.user.findUnique({
+      where: { id }
+    });
+
+    return user !== null;
+  }
+
   async createUser(username: string, email: string, cleartextPassword: string) {
     const existsByEmail = await this.userExistsByEmail(email);
     const existsByUsername = await this.userExistsByUsername(username);
@@ -47,7 +55,7 @@ class UserService {
 
     const SALT_LEN = 10;
     const hashedPassword = await bcrypt.hash(cleartextPassword, SALT_LEN);
-    await db.user.create({
+    return await db.user.create({
       data: {
         username,
         email,

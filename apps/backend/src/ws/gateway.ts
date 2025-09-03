@@ -6,6 +6,7 @@ import passport from "../config/passport";
 import { onlyPassAuthenticated } from "../middleware/authMiddleware";
 import { handleConnect } from "./handlers/connectHandler";
 import { registerDisconnectEvent } from "./handlers/disconnectHandler";
+import { registerMessageHandler } from "./handlers/messageHandler";
 
 export const startWebSocketServer = (listener: http.Server) => {
   const io = new Server(listener);
@@ -20,6 +21,7 @@ export const startWebSocketServer = (listener: http.Server) => {
     try {
       await handleConnect(io, socket);
       await registerDisconnectEvent(io, socket);
+      await registerMessageHandler(io, socket);
     }
     catch {
       socket.disconnect();

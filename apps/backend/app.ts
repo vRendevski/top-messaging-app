@@ -19,5 +19,6 @@ app.use(errorMiddleware);
 
 const PORT = process.env.PORT ?? 8080;
 const listener = createServer(app);
-startWebSocketServer(listener);
+const webSocketServer = startWebSocketServer(listener);
+app.set("webSocketServer", webSocketServer);
 listener.listen(PORT);

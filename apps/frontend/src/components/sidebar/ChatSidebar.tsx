@@ -6,25 +6,25 @@ import {
   SidebarGroupContent,
   SidebarMenu,
 } from '@/components/ui/sidebar';
-import SidebarChatroomMenuItem from './SidebarChatroomMenuItem';
+import SidebarUserChatMenuItem from './SidebarUserChatMenuItem';
 import SidebarUserFooter from './SidebarUserFooter';
-import  { useChatrooms } from '@/hooks/useChatrooms';
+import { useUserChats } from '@/hooks/useUserChats';
 
 export default function ChatSidebar() {
-  const { chatrooms, dispatch } = useChatrooms();
+  const { userChats } = useUserChats();
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Messages</SidebarGroupLabel>
+          <SidebarGroupLabel>Direct Messages</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              { chatrooms.map(chatroom => (
-                <SidebarChatroomMenuItem 
-                  key={chatroom.id} 
-                  name={chatroom.name}  
-                  isActive={chatroom.isActive}
-                  unreadCount={chatroom.unreadCount}
+              { userChats.map(userChat => (
+                <SidebarUserChatMenuItem
+                  key={userChat.id} 
+                  id={userChat.id}
+                  username={userChat.username}  
+                  isOnline={userChat.isOnline}
                 />
               ))}
             </SidebarMenu>

@@ -1,4 +1,4 @@
-import { Form } from '@/components/ui/form';
+import { Form, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { AuthSchemas, type AuthTypes } from '@vRendevski/shared/schemas/rest';
@@ -17,7 +17,14 @@ export default function LoginForm() {
   });
 
   async function onSubmit(data: AuthTypes.LoginBody) {
-    await login(data);
+    const response = await login(data);
+    if(!response.success) {
+      form.setError("root", {
+        type: "server",
+        message: response.data.message
+      });
+      return;
+    }
     await refetchMe();
   }
   
@@ -26,6 +33,7 @@ export default function LoginForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
         <InputField control={form.control} name="email" label="Email" type="email" />
         <InputField control={form.control} name="password" label="Password" type="password" />
+        <FormMessage />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
