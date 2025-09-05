@@ -8,11 +8,10 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form'
-import { EventSchemas, type EventTypes } from '@vRendevski/shared/schemas/ws/events';
+import { EventSchemas, type EventTypes } from '@vRendevski/shared';
 import { zodV4Resolver } from '@/utils/zodV4Resolver';
 import { useSocket } from '@/hooks/useSocket';
 import { useUserChats } from '@/hooks/useUserChats';
-import { useEffect } from 'react';
 
 interface MessagingFormProps {
   toId: number
@@ -29,9 +28,7 @@ export default function MessagingForm({ toId }: MessagingFormProps) {
     }
   });
 
-  useEffect(() => {
-    form.setValue("toId", toId);
-  }, [form, toId])
+  form.setValue("toId", toId);
 
   function onSubmit(data: EventTypes.MessageSend) {
     socket.emit("message:send", data, (ackData) => {

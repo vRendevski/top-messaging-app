@@ -3,7 +3,7 @@ import useLoginMutation from "./auth/useLoginMutation";
 import useSignupMutation from "./auth/useSignupMutation";
 import useMeMutation from "./auth/useMeMutation";
 import useLogoutMutation from "./auth/useLogoutMutation";
-import { type AuthTypes } from "@vRendevski/shared/schemas/rest";
+import { type AuthTypes } from "@vRendevski/shared";
 
 type User = AuthTypes.MeResponse;
 

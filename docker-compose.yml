@@ -1,0 +1,37 @@
+name: top-messaging-app
+
+services:
+  postgres:
+    restart: always
+    container_name: postgres
+    image: postgres:latest
+    env_file:
+      - .dockerenv
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend: 
+    restart: on-failure
+    container_name: backend
+    build: 
+      dockerfile: dockerfile.backend
+    ports: 
+      - "8080:8080"
+    env_file:
+      - .dockerenv
+    depends_on:
+      postgres:
+        condition: service_healthy
+  
+  frontend: 
+    restart: on-failure
+    container_name: frontend
+    build:
+      dockerfile: dockerfile.frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend

@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { withValidation } from "../middleware/validationMiddleware";
 import { onlyPassAuthenticated } from "../middleware/authMiddleware";
-import { AuthTypes, AuthSchemas } from "@vRendevski/shared/schemas/rest";
-import { EventSchemas } from "@vRendevski/shared/schemas/ws/events";
+import { AuthTypes, AuthSchemas } from "@vRendevski/shared";
+import { EventSchemas } from "@vRendevski/shared";
 import { type ServerInstance as WebSocketServer } from "../ws/types";
 import userService from "../service/UserService";
 import userSelect from "../select/userSelect";

@@ -1,4 +1,4 @@
-import { Prisma } from "../generated/prisma";
+import { Prisma } from "@prisma/client";
 import db from "../db/prisma";
 import BadRequestError from "../error/BadRequestError";
 import userService from "./UserService";

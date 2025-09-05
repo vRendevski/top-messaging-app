@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
-import { createSuccessResponseSchema } from "@vRendevski/shared/schemas/rest";
+import { createSuccessResponseSchema } from "@vRendevski/shared";
 
 type RequestShape = {
   params: z.ZodType,

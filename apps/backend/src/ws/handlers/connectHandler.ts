@@ -1,5 +1,5 @@
 import { ServerInstance, Socket } from "../types";
-import { EventSchemas } from "@vRendevski/shared/schemas/ws/events";
+import { EventSchemas } from "@vRendevski/shared";
 import userService from "../../service/UserService";
 import userSelect from "../../select/userSelect";
 import messageService from "../../service/MessageService";

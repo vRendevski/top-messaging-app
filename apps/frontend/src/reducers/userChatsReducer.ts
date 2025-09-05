@@ -1,4 +1,4 @@
-import type { EventTypes } from "@vRendevski/shared/schemas/ws/events";
+import type { EventTypes } from "@vRendevski/shared";
 
 export interface Message {
   id: number,

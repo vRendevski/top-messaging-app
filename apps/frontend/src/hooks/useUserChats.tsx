@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from 'react'
 import { useSocket } from './useSocket';
 import userChatsReducer, { type UserChat, type UserChatReducerAction } from '@/reducers/userChatsReducer';
-import { type EventTypes } from '@vRendevski/shared/schemas/ws/events';
+import { type EventTypes } from '@vRendevski/shared';
 
 interface UserChatsProviderState {
   userChats: UserChat[],

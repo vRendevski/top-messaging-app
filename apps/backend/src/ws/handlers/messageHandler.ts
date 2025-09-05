@@ -1,5 +1,5 @@
 import { type ServerInstance, type Socket } from "../types"
-import { EventSchemas, EventTypes } from "@vRendevski/shared/schemas/ws/events";
+import { EventSchemas, EventTypes } from "@vRendevski/shared";
 import messageService from "../../service/MessageService";
 
 export function registerMessageHandler(io: ServerInstance, socket: Socket) {

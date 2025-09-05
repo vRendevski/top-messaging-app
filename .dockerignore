@@ -1,0 +1,8 @@
+.git
+.gitignore
+dockerfile.backend
+.dockerignore
+.dockerenv
+**/node_modules
+**/dist
+**/.env

@@ -1,12 +1,14 @@
-import { Form, FormMessage } from '@/components/ui/form';
+import { useNavigate } from '@tanstack/react-router';
+import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { zodV4Resolver } from '@/utils/zodV4Resolver';
-import { AuthSchemas, type AuthTypes } from '@vRendevski/shared/schemas/rest/';
+import { AuthSchemas, type AuthTypes } from '@vRendevski/shared';
 import { useAuth } from '@/hooks/useAuth';
 import InputField from "./InputField";
 
 export default function SignupForm() {
+  const navigate = useNavigate();
   const { signup } = useAuth();
   const form = useForm<AuthTypes.RegisterBody>({
     resolver: zodV4Resolver(AuthSchemas.requests.register.body),
@@ -26,6 +28,7 @@ export default function SignupForm() {
       });
       return;
     }
+    navigate({ to: "/login" });
   }
 
   return (

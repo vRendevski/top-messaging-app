@@ -1,7 +1,7 @@
 import { Form, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
-import { AuthSchemas, type AuthTypes } from '@vRendevski/shared/schemas/rest';
+import { AuthSchemas, type AuthTypes } from '@vRendevski/shared';
 import { zodV4Resolver } from '@/utils/zodV4Resolver';
 import { useAuth } from '@/hooks/useAuth';
 import InputField from './InputField';

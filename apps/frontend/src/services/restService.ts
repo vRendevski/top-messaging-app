@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance } from "axios";
 import { z } from "zod";
-import { createApiResponseSchema } from "@vRendevski/shared/schemas/rest";
+import { createApiResponseSchema } from "@vRendevski/shared";
 
 class RestService {
   api: AxiosInstance;

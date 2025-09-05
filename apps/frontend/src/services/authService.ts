@@ -1,4 +1,4 @@
-import { AuthSchemas } from '@vRendevski/shared/schemas/rest';
+import { AuthSchemas } from '@vRendevski/shared';
 import restService from './restService';
 
 class AuthService {

@@ -1,7 +1,7 @@
 import db from "../db/prisma";
 import bcrypt from "bcryptjs";
 import BadRequestError from "../error/BadRequestError";
-import { Prisma } from "../generated/prisma";
+import { Prisma } from "@prisma/client";
 
 class UserService {
   async getUserByEmail<S extends Prisma.UserSelect>(email: string, select: S) {

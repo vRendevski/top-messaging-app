@@ -1,4 +1,4 @@
-import { PrismaClient } from "../generated/prisma";
+import { PrismaClient } from "@prisma/client";
 
 if(process.env.DATABASE_URL === undefined) {
   throw new Error("You need to provide a DATABASE_URL in .env");

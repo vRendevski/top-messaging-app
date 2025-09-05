@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import AppError from "../error/AppError";
-import { ErrorResponseSchema } from "@vRendevski/shared/schemas/rest";
+import { ErrorResponseSchema } from "@vRendevski/shared";
 
 function errorMiddleware(error: any, req: Request, res: Response, next: NextFunction) {
   const statusCode = error.statusCode ?? 500;

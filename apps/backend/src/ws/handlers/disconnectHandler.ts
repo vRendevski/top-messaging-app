@@ -1,5 +1,5 @@
 import { ServerInstance, Socket } from "../types";
-import { EventSchemas } from "@vRendevski/shared/schemas/ws/events";
+import { EventSchemas } from "@vRendevski/shared";
 
 export async function registerDisconnectEvent(io: ServerInstance, socket: Socket) {
   socket.on("disconnect", () => handleDisconnect(io, socket));

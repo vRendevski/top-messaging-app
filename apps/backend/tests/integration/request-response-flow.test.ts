@@ -2,7 +2,7 @@ import request from "supertest";
 import express from "express";
 import errorMiddleware from "../../src/middleware/errorMiddleware";
 import { withValidation } from "../../src/middleware/validationMiddleware";
-import { EmptyRequestSchema, EmptyResponseSchema } from "@vRendevski/shared/schemas/rest";
+import { EmptyRequestSchema, EmptyResponseSchema } from "@vRendevski/shared";
 
 const mockController = jest.fn();
 

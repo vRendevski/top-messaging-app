@@ -2,7 +2,7 @@ import * as z from "zod";
 import { ZodError } from "zod";
 import { withValidation } from "../../src/middleware/validationMiddleware";
 import { Request, Response, NextFunction } from "express";
-import { EmptyParams, EmptyQuery, EmptyBody, EmptyResponseSchema, EmptyRequestSchema } from "@vRendevski/shared/schemas/rest/common/empty";
+import { EmptyParams, EmptyQuery, EmptyBody, EmptyResponseSchema, EmptyRequestSchema } from "@vRendevski/shared";
 
 describe("validateWith", () => {
   let mockNext: jest.MockedFunction<NextFunction>;
